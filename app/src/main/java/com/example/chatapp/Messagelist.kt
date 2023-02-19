@@ -1,6 +1,6 @@
 package com.example.chatapp
 
-class Message {
+class Messagelist {
     var message: String?= null
     var senderID: String? = null
     constructor(){}
