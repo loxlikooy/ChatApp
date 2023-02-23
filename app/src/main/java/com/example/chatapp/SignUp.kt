@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -23,12 +24,15 @@ class SignUp : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
+
         supportActionBar?.hide()
+
         mAuth = FirebaseAuth.getInstance()
         email = findViewById(R.id.Email)
         password = findViewById(R.id.password)
         txt_name = findViewById(R.id.txt_name)
         btnsignup = findViewById(R.id.btn_signup)
+
         btnsignup.setOnClickListener {
             val email = email.text.toString()
             val password = password.text.toString()
@@ -38,7 +42,6 @@ class SignUp : AppCompatActivity() {
     }
 
     private fun signup(name:String, email: String, password: String) {
-
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -56,7 +59,7 @@ class SignUp : AppCompatActivity() {
     }
  private fun addUserToDatabase(name: String, email: String, uid: String)
  {
-     mDbRef=FirebaseDatabase.getInstance().getReference()
+     mDbRef = FirebaseDatabase.getInstance().reference
 
      mDbRef.child("user").child(uid).setValue(User(name, email, uid))
  }

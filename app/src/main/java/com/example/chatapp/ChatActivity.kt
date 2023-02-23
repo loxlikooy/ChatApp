@@ -26,14 +26,19 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
-        val intent = Intent()
+        val intent = getIntent()
+        val bundle: Bundle? = intent.extras
         val name = intent.getStringExtra("name")
         val receiverUid = intent.getStringExtra("uid")
-
         val senderUid = FirebaseAuth.getInstance().currentUser?.uid
         mDbref = FirebaseDatabase.getInstance().getReference()
-        senderRoom = receiverUid+senderUid
-        receiverRoom= senderUid+receiverUid
+
+        println("AAAAAAAAAAAAAAa")
+        println(receiverUid)
+
+        senderRoom = receiverUid + senderUid
+        receiverRoom = senderUid + receiverUid
+
         supportActionBar?.title = name
 
         messageRecyclerView = findViewById(R.id.chatResycler)
@@ -44,14 +49,9 @@ class ChatActivity : AppCompatActivity() {
         messageRecyclerView.layoutManager = LinearLayoutManager(this)
         messageRecyclerView.adapter = messageAdapter
 
-
-
-
-
-
         sendButton.setOnClickListener{
             val message = messageBox.text.toString()
-            val messagelistObject = Messagelist(message, receiverUid)
+            val messagelistObject = Messagelist(message, senderUid)
 
             mDbref.child("chats").child(senderRoom!!).child("messages").push()
                 .setValue(messagelistObject).addOnSuccessListener {

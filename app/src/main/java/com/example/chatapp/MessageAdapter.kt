@@ -20,52 +20,46 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Messagelis
             val view:View= LayoutInflater.from(context).inflate(R.layout.recieve, parent, false)
             return ReceiveViewHolder(view)
 
-        }else   {
+        } else {
             val view:View= LayoutInflater.from(context).inflate(R.layout.sent, parent, false)
             return SentViewHolder(view)
 
         }
-
-
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentMessage = messageList[position]
 
-
-   if (holder.javaClass == SentViewHolder::class.java){
-       //sent
-
-
-       val viewHolder = holder as SentViewHolder
-       holder.sentMessage.text=currentMessage.message
-   }
-
-
+        if (holder.javaClass == SentViewHolder::class.java){
+            //sent
+            val viewHolder = holder as SentViewHolder
+            holder.sentMessage.text=currentMessage.message
+        }
         else{
             //recieve
-
             val viewHolder= holder as ReceiveViewHolder
-       holder.receiveMessage.text = currentMessage.message
-   }
+            holder.receiveMessage.text = currentMessage.message
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
         val currentMessage = messageList[position]
-        if (FirebaseAuth.getInstance().currentUser?.uid.equals(currentMessage.message)){
-            return ITEM_SENT}
-    else { return ITEM_RECIEVE}
+        if (FirebaseAuth.getInstance().currentUser?.uid.equals(currentMessage.senderID)) {
+            return ITEM_SENT
+        } else {
+            return ITEM_RECIEVE
+        }
     }
 
     override fun getItemCount(): Int {
         return messageList.size
-
     }
-    class   SentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+
+    class SentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val sentMessage = itemView.findViewById<TextView>(R.id.txt_send_message)
     }
 
-    class   ReceiveViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class ReceiveViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val receiveMessage = itemView.findViewById<TextView>(R.id.txt_recieve_message)
     }
 

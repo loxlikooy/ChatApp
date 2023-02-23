@@ -13,9 +13,6 @@ import com.google.firebase.auth.FirebaseAuth
 class UserAdapter(val context:Context, val userList: ArrayList<User>):
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
-
-
-
     @SuppressLint("SuspiciousIndentation")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
     val view:View=LayoutInflater.from(context).inflate(R.layout.user_layout, parent, false)
@@ -23,28 +20,26 @@ class UserAdapter(val context:Context, val userList: ArrayList<User>):
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        val currentUser= userList[position]
+        val currentUser = userList[position]
 
-        holder.textName.text= currentUser.txt_name
+        holder.textName.text = currentUser.txt_name
 
         holder.itemView.setOnClickListener{
-            val intent = Intent(context,ChatActivity::class.java)
+            val currentUser = userList[position]
+            val intent = Intent(context, ChatActivity::class.java)
 
             intent.putExtra("name", currentUser.txt_name)
-            intent.putExtra("uid",currentUser.uid)
-
+            intent.putExtra("uid", currentUser.uid)
 
             context.startActivity(intent)
         }
-
     }
 
     override fun getItemCount(): Int {
         return userList.size
-
     }
+
     class UserViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val textName = itemView.findViewById<TextView>(R.id.txt_name)
     }
-
 }
